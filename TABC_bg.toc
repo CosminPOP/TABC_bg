@@ -3,5 +3,5 @@
 ## Author: Xerron/Er
 ## Version: 1.0.0.0
 ## Notes: TABC BG Helper
+## Dependencies: BigWigs
 TABC_bg.xml
-

@@ -13,13 +13,316 @@ tabcbg:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 tabcbg:RegisterEvent("CHAT_MSG_SYSTEM")
 
 tabcbg:RegisterEvent("CHAT_MSG_SAY")
+tabcbg:RegisterEvent("CHAT_MSG_ADDON")
+
+tabcbg:RegisterEvent("UPDATE_WORLD_STATES")
+
+-- todo
+-- remove hp bars on run out yells, you seek to draw ...
 
 tabcbg.debug = false
 
---CHAT_MSG_SAY
+tabcbg.ab_rates = {
+    [0] = { time = 999999, rate = 999999 },
+    [1] = { time = 11, rate = 1.1 },
+    [2] = { time = 10, rate = 1 },
+    [3] = { time = 6, rate = 0.6 },
+    [4] = { time = 3, rate = 0.3 },
+    [5] = { time = 1, rate = 0.03333 }
+};
+
+tabcbg.ab_faction = 'alliance'
+
+tabcbg.status = {
+    ['a'] = {
+        score = 0, bases = 0, lastUpdate = 0, updated = false
+    },
+    ['h'] = {
+        score = 0, bases = 0, lastUpdate = 0, updated = false
+    },
+}
+
+tabcbg.ab_isWinning = { faction = 0, score = 0 }; -- faction: 1-alliance 2-horde
+
+tabcbg.AVBossNames = {
+    'Captain Balinda Stonehearth',
+    'Captain Galvangar',
+    'Vanndar Stormpike',
+    'Drek\'Thar'
+}
+
+tabcbg.bossHpBarStarted = {false, false, false, false}
+
+function tabcbg:timeToWin(faction)
+    if self.status[faction].score >= 2000 then
+        return 0
+    end
+
+    local timePerTick = self.ab_rates[self.status[faction].bases].time
+    local timeToNextTick = timePerTick - (time() - self.status[faction].lastUpdate)
+    -- 6 - (0 - 0)
+
+    if self.status[faction].score + 10 == 2000 then
+        return timeToNextTick
+    end
+
+    return (((2000 - (self.status[faction].score + 10)) / 10) * timePerTick) + timeToNextTick;
+end
+
+function score_test(astart, hstart, abases, hbases, timers)
+    tabcbg:update_ws(astart, hstart, abases, hbases, timers)
+end
+
+tabcbg.lastTimersUpdate = time()
+
+--/run score_test(1000, 500, 3, 2)
+
+function tabcbg:update_ws(astart, hstart, abases, hbases, timers)
+
+    local inAb, inWsg = false, false
+    for i = 1, MAX_BATTLEFIELD_QUEUES do
+        local status, mapName = GetBattlefieldStatus(i);
+
+        if status == "active" then
+            if mapName == "Arathi Basin" then
+                inAb = true
+                TABCbg:Show()
+                TABCbgAB:Show()
+            end
+            if mapName == "Warsong Gulch" then
+                inWsg = true
+                TABCbg:Show()
+                TABCbgWSG:Show()
+            end
+        end
+    end
+
+    if not inAb and not inWsg then
+        TABCbg:Hide()
+        TABCbgAB:Hide()
+        TABCbgWSG:Hide()
+    end
+
+    if not inAb then
+        return
+    end
+
+    if self.lastTimersUpdate ~= time() or timers then
+        self.lastTimersUpdate = time()
+
+        local estimatedAlly, estimatedHorde, timeLeft, needed = 0, 0, 0, 0
+
+        estimatedAlly, estimatedHorde, timeLeft, needed = tabcbg:ab_getData(astart, hstart, abases, hbases)
+
+        --if estimatedAlly == 0 and estimatedHorde == 0 and timeLeft == 0 and needed == 0 then
+        --    DEFAULT_CHAT_FRAME:AddMessage("all 0 return")
+        --    return
+        --end
+
+        if timers then
+
+            local estiAlianceTime = self:timeToWin('a');
+            local estiHordeTime = self:timeToWin('h');
+
+            -- need not good
+            if needed and needed > 0 then
+                if estiAlianceTime < estiHordeTime then
+                    DEFAULT_CHAT_FRAME:AddMessage("Alliance needs : " .. needed)
+                    DEFAULT_CHAT_FRAME:AddMessage("Horde needs : " .. (5 - needed))
+                end
+                if estiAlianceTime > estiHordeTime then
+                    DEFAULT_CHAT_FRAME:AddMessage("Alliance needs : " .. (5 - needed))
+                    DEFAULT_CHAT_FRAME:AddMessage("Horde needs : " .. needed)
+                end
+            end
+
+            if estiAlianceTime > 0 and estiAlianceTime < 60 * 60 then
+                self:BGBar("Alliance win", estiAlianceTime, 'inv_jewelry_trinketpvp_01', true)
+            end
+            if estiHordeTime > 0 and estiHordeTime < 60 * 60 then
+                self:BGBar("Horde win", estiHordeTime, 'inv_jewelry_trinketpvp_02', true)
+            end
+
+            -- todo remove timers on "The * wins!"
+
+        end
+
+        --DEFAULT_CHAT_FRAME:AddMessage("eA:" .. estimatedAlly ..
+        --        " eH:" .. estimatedHorde ..
+        --        " TL:" .. timeLeft ..
+        --        " need:" .. needed)
+
+
+    end
+end
+
+function tabcbg:ab_win_bases_needed(a_score, h_score)
+    if a_score and h_score then
+        a_score = tonumber(a_score)
+        h_score = tonumber(h_score)
+        if (((2000 - a_score) * self.ab_rates[1].rate) < ((2000 - h_score) * self.ab_rates[4].rate)) then
+            return 1
+        elseif (((2000 - a_score) * self.ab_rates[2].rate) < ((2000 - h_score) * self.ab_rates[3].rate)) then
+            return 2
+        elseif (((2000 - a_score) * self.ab_rates[3].rate) < ((2000 - h_score) * self.ab_rates[2].rate)) then
+            return 3
+        elseif (((2000 - a_score) * self.ab_rates[4].rate) < ((2000 - h_score) * self.ab_rates[1].rate)) then
+            return 4
+        else
+            return 5
+        end
+    else
+        return ;
+    end
+end
+
+function tabcbg:ab_score_after(faction, seconds)
+    --*
+    local timePerTick = self.ab_rates[self.status[faction].bases].time;
+
+    local timeToNextTick = timePerTick - (time() - self.status[faction].lastUpdate);
+
+    -- check for no changes until second
+    if (timeToNextTick > seconds) then
+        return self.status[faction].score;
+    end
+
+    return self.status[faction].score + 10 + (floor((seconds - timeToNextTick) / timePerTick) * 10);
+end
+
+function tabcbg:ab_getData(astart, hstart, abases, hbases)
+
+    local winner;
+    local scoreWinner;
+    local estimatedTime, estimatedAlly, estimatedHorde, estiAlianceTime, estiHordeTime;
+
+    local _, _, allyBases, allyScore
+    local _, _, hordeBases, hordeScore
+
+    if astart and hstart and abases and hbases then
+
+        allyBases = abases
+        allyScore = astart
+        hordeBases = hbases
+        hordeScore = hstart
+    else
+        local _, stat1 = GetWorldStateUIInfo(1);
+        local _, stat2 = GetWorldStateUIInfo(2);
+        _, _, allyBases, allyScore = string.find(stat1, "Bases: (%d+)  Resources: (%d+)/2000");
+        _, _, hordeBases, hordeScore = string.find(stat2, "Bases: (%d+)  Resources: (%d+)/2000");
+    end
+
+    allyBases = tonumber(allyBases);
+    hordeBases = tonumber(hordeBases);
+    allyScore = tonumber(allyScore);
+    hordeScore = tonumber(hordeScore);
+
+    local needed = self:ab_win_bases_needed(allyScore, hordeScore);
+
+    if not allyScore or not hordeScore or allyScore == 2000 or hordeScore == 2000 then
+        --DEFAULT_CHAT_FRAME:AddMessage("1")
+        return 0, 0, 0, 0
+    end
+
+    self.status['a'].bases = allyBases
+    self.status['h'].bases = hordeBases
+
+    if self.status['a'].lastUpdate == 0 then
+        self.status['a'].score = allyScore
+        self.status['a'].lastUpdate = time()
+    end
+    if self.status['h'].lastUpdate == 0 then
+        self.status['h'].score = hordeScore
+        self.status['h'].lastUpdate = time()
+    end
+
+    -- check for 5-0
+    if allyBases == 5 then
+        return 2000, hordeScore, 0, 0;
+    end
+    if hordeBases == 5 then
+        return allyScore, 2000, 0, 0;
+    end
+
+    if allyBases == 0 and hordeBases == 0 then
+        --DEFAULT_CHAT_FRAME:AddMessage("2")
+        return 0, 0, 0, 0;
+    end
+
+    if allyBases == 0 then
+        self.status['a'].updated = true;
+    end
+
+    if hordeBases == 0 then
+        self.status['h'].updated = true;
+    end
+
+    if allyScore ~= self.status['a'].score then
+        self.status['a'].score = allyScore
+        self.status['a'].lastUpdate = time()
+        self.status['a'].updated = true
+    end
+    if hordeScore ~= self.status['h'].score then
+        self.status['h'].score = hordeScore
+        self.status['h'].lastUpdate = time()
+        self.status['h'].updated = true
+    end
+
+    --if not self.status['a'].updated or not self.status['h'].updated then
+    --    DEFAULT_CHAT_FRAME:AddMessage("3")
+    --    return 0, 0, 0, 0;
+    --end
+
+    estiAlianceTime = self:timeToWin('a');
+    estiHordeTime = self:timeToWin('h');
+    --DEFAULT_CHAT_FRAME:AddMessage("estiAlianceTime " .. estiAlianceTime)
+    --DEFAULT_CHAT_FRAME:AddMessage("estiHordeTime " .. estiHordeTime)
+
+    if (estiHordeTime > estiAlianceTime) or (hordeBases == 0) then
+        -- aliance victory
+        estimatedAlly = 2000;
+        estimatedHorde = self:ab_score_after('h', estiAlianceTime);
+        winner = 1;
+        scoreWinner = allyScore;
+        estimatedTime = estiAlianceTime;
+    else
+        estimatedHorde = 2000;
+        estimatedAlly = self:ab_score_after('a', estiHordeTime);
+        winner = 2;
+        scoreWinner = hordeScore;
+        estimatedTime = estiHordeTime;
+    end
+
+    local timeLeft = 0
+    local lastLeftTimerUpdate
+
+    if estimatedTime then
+        -- only return estimatedTime for resources changes on winner
+        if (winner ~= self.ab_isWinning.faction) or (scoreWinner ~= self.ab_isWinning.score) then
+            timeLeft = estimatedTime;
+            lastLeftTimerUpdate = time();
+            self.ab_isWinning.faction = winner;
+            self.ab_isWinning.score = scoreWinner;
+            --DEFAULT_CHAT_FRAME:AddMessage("4")
+            --DEFAULT_CHAT_FRAME:AddMessage("timeleft " .. timeLeft)
+            return estimatedAlly, estimatedHorde, estimatedTime, needed;
+        else
+            --DEFAULT_CHAT_FRAME:AddMessage("5")
+            --DEFAULT_CHAT_FRAME:AddMessage("estimatedTime " .. estimatedTime)
+            return estimatedAlly, estimatedHorde, timeLeft, needed;
+        end
+    else
+        --DEFAULT_CHAT_FRAME:AddMessage("6")
+        return estimatedAlly, estimatedHorde, 0, needed;
+    end
+
+end
 
 tabcbg:SetScript("OnEvent", function()
     if event then
+        if event == "UPDATE_WORLD_STATES" then
+            tabcbg:update_ws()
+        end
         if event == "CHAT_MSG_BG_SYSTEM_NEUTRAL" or (tabcbg.debug and event == 'CHAT_MSG_SAY') then
             tabcbg:bg_neutral(arg1)
         end
@@ -35,6 +338,11 @@ tabcbg:SetScript("OnEvent", function()
         if event == "CHAT_MSG_SYSTEM" or (tabcbg.debug and event == 'CHAT_MSG_SAY') then
             tabcbg:system(arg1)
         end
+        if event == 'CHAT_MSG_ADDON' and arg1 == "TABCBG" then
+            if arg4 ~= UnitName('player') or true then --debug
+                tabcbg:addon(arg2)
+            end
+        end
     end
 end)
 
@@ -48,8 +356,14 @@ tabcbg.timer = {
     av = 60 * 5
 }
 
-tabcbg.startingMin = "The battle for (.+) begins in 1 minute."
-tabcbg.startingSec = "The battle for (.+) begins in 30 seconds. Prepare yourselves!"
+tabcbg.startingMin = "The Battle for (.+) begins in 1 minute."
+tabcbg.startingMinLower = "The battle for (.+) begins in 1 minute."
+
+--1 minute untill the battle for Alterac Valley begins.
+--30 minute untill the battle for Alterac Valley begins.
+
+tabcbg.startingSec = "The Battle for (.+) begins in 30 seconds. Prepare yourselves!"
+tabcbg.startingSecLower = "The battle for (.+) begins in 30 seconds. Prepare yourselves!"
 
 tabcbg.begun = "The battle for (.+) has begun!"
 
@@ -63,7 +377,6 @@ tabcbg.claimed = "(.+) claims the (.+)! If left unchallenged, the (.+) will cont
 
 tabcbg.capturedFlag = "(.+) captured the (.+) flag!"
 
-
 tabcbg.gy_trigger_under_attack = "(.+) is under attack! If left unchecked, the (.+) will capture it!"
 tabcbg.tower_trigger_under_attack = "(.+) is under attack! If left unchecked, the (.+) will destroy it!"
 tabcbg.defended_trigger = "(.+) was taken by the (.+)!"
@@ -74,7 +387,6 @@ local AlteracValleyYellTriggers = {
     "Die! Your kind has no place in Alterac Valley!",
     "I'll never fall for that, fool! If you want a battle it will be on my terms and in my lair!"
 }
-
 
 function tabcbg_test()
     tabcbg:bg_neutral("Er has assaulted the farm", "a")
@@ -128,7 +440,7 @@ function tabcbg:bg_neutral(msg, faction)
 
     local _, _, name, f = string.find(msg, tabcbg.capturedFlag)
     if name and f then
-        self:BGBar("Flag respawn", 20, 'inv_banner_03', true)
+        self:BGBar("Flag respawn", 24, 'inv_banner_03', true)
     end
 
 end
@@ -186,12 +498,16 @@ end
 
 function tabcbg:BGBar(name, duration, icon, add_bar)
 
+    if not BigWigs then
+        -- this addon requires bigwigs
+        return
+    end
+
     if not BigWigs:IsActive() then
         BigWigsOptions:OnClick()
     end
 
     local L = BigWigs:GetModule("Test")
-
 
     L:RemoveBar(fixBase(name))
     if add_bar then
@@ -199,8 +515,6 @@ function tabcbg:BGBar(name, duration, icon, add_bar)
     end
 
 end
-
-
 
 tabcbg.hpCheck:SetScript("OnShow", function()
     this.startTime = GetTime()
@@ -218,34 +532,28 @@ tabcbg.hpCheck:SetScript("OnUpdate", function()
     end
 end)
 
-function aCheckAddHP()
-    local health1, maxhealth1
-    local health2, maxhealth2
-    if UnitName("playertarget") == L["add1"] then
-        health1 = UnitHealth("playertarget")
-    elseif UnitName("playertarget") == L["add2"] then
-        health2 = UnitHealth("playertarget")
-    end
+function TABCBG_AV_checkBossHP()
+    local health, maxhealth, hpPercent
 
-    for i = 1, GetNumRaidMembers(), 1 do
-        if UnitName("Raid"..i.."target") == L["add1"] then
-            health1 = UnitHealth("Raid"..i.."target")
-            maxhealth1 = UnitHealthMax("Raid"..i.."target")
-        elseif UnitName("Raid"..i.."target") == L["add2"] then
-            health2 = UnitHealth("Raid"..i.."target")
-            maxhealth2 = UnitHealthMax("Raid"..i.."target")
+    for index, bossName in tabcbg.AVBossNames do
+
+        if UnitName("playertarget") == bossName then
+            health = UnitHealth("playertarget")
         end
-        if health1 and health2 then break; end
-    end
 
-    if health1 and maxhealth1 then
-        self.add1HP = health1 * 100 / maxhealth1
-        self:TriggerEvent("BigWigs_SetHPBar", self, L["add1"], 100-self.add1HP)
-    end
+        for i = 1, GetNumRaidMembers(), 1 do
+            if UnitName("Raid" .. i .. "target") == bossName then
+                health = UnitHealth("Raid" .. i .. "target")
+                maxhealth = UnitHealthMax("Raid" .. i .. "target")
+                break
+            end
+        end
 
-    if health2 and maxhealth2 then
-        self.add2HP = health2 * 100 / maxhealth2
-        self:TriggerEvent("BigWigs_SetHPBar", self, L["add2"], 100-self.add2HP)
+        if health1 then
+            hpPercent = math.floor(health * 100 / maxhealth)
+            SendAddonMessage("TABCBG", "boss:" .. index .. ":" .. hpPercent, "BATTLEGROUND")
+        end
+
     end
 end
 
@@ -266,13 +574,14 @@ function tabcbg:setHpBar(name, hp)
 
     local L = BigWigs:GetModule("Test")
 
-    L:TriggerEvent("BigWigs_SetHPBar", L, name, 100-hp)
+    L:TriggerEvent("BigWigs_SetHPBar", L, name, 100 - hp)
 end
-
 
 function tabcbg:ABEvent(msg, bar_icon)
 
-    DEFAULT_CHAT_FRAME:AddMessage("AB Event: " .. msg)
+    --DEFAULT_CHAT_FRAME:AddMessage("AB Event: " .. msg)
+
+    self:update_ws(nil, nil, nil, nil, true)
 
     local _, _, a_player, a_base = string.find(msg, self.assaulted)
     local _, _, d_player, d_base = string.find(msg, self.defended)
@@ -308,17 +617,69 @@ function tabcbg:ABEvent(msg, bar_icon)
         self:BGBar("Game Start", 30, 'inv_misc_pocketwatch_01', true)
         return
     end
+
+    local _, _, bg1l = string.find(msg, self.startingMinLower)
+    if bg1l then
+        self:BGBar("Game Start", 60, 'inv_misc_pocketwatch_01', true)
+        return
+    end
+
+    local _, _, bg30l = string.find(msg, self.startingSecLower)
+    if bg30l then
+        self:BGBar("Game Start", 30, 'inv_misc_pocketwatch_01', true)
+        return
+    end
 end
 
+function tabcbg:addon(msg)
+    --boss:1:20
+    local m = string.split(msg, ':')
+    if m[3] then
+        if not self.bossHpBarStarted[tonumber(m[2])] then
+            self:startHpBar(self.AVBossNames[tonumber(m[2])], 100, "inv_bannerpvp_02")
+            self:setHpBar(self.AVBossNames[tonumber(m[2])], 100)
+            self.bossHpBarStarted[tonumber(m[2])] = true
+        else
+            self:setHpBar(self.AVBossNames[tonumber(m[2])], tonumber(m[3]))
+        end
+    end
+end
+
+-- hp timers
+tabcbg.hpCheck = CreateFrame("Frame")
+tabcbg.hpCheck:Hide()
+tabcbg.hpCheck:SetScript("OnShow", function()
+    this.startTime = GetTime()
+end)
+tabcbg.hpCheck:SetScript("OnUpdate", function()
+    local plus = 1 --seconds
+    local gt = GetTime() * 1000
+    local st = (this.startTime + plus) * 1000
+    if gt >= st then
+        this.startTime = GetTime()
+        TABCBG_AV_checkBossHP()
+    end
+end)
 
 SLASH_TABCBG1 = "/tabcbg"
 SlashCmdList["TABCBG"] = function(cmd)
     if cmd then
-        if string.find(cmd, "bg") then
-            if TABCbg:IsVisible() then
+        if string.find(cmd, "wsg") then
+            if TABCbgWSG:IsVisible() then
                 TABCbg:Hide()
+                TABCbgWSG:Hide()
             else
                 TABCbg:Show()
+                TABCbgWSG:Show()
+            end
+        end
+        if string.find(cmd, "ab") then
+            if TABCbgAB:IsVisible() then
+                TABCbg:Hide()
+                TABCbgAB:Hide()
+            else
+                TABCbg:Show()
+                TABCbgAB:Show()
             end
         end
     end

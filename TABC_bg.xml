@@ -2,10 +2,10 @@
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
     <Script file="TABC_bg.lua"/>
 
-    <Frame name="TABCbg" hidden="false" toplevel="true"
+    <Frame name="TABCbg" hidden="true" toplevel="true"
            parent="UIParent" movable="true" enableMouse="true" resizable="false">
         <Size>
-            <AbsDimension x="230" y="330"/>
+            <AbsDimension x="230" y="190"/>
         </Size>
         <Anchors>
             <Anchor point="CENTER">
@@ -19,10 +19,17 @@
         </Backdrop>
         <Frames>
 
-            <Button name="$parentEFCOurRoof" inherits="UIPanelButtonTemplate2" text="EFC Our Roof">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="25" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </Button>
+
+            <Frame name="$parentWSG" hidden="true">
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
@@ -30,746 +37,781 @@
                         </Offset>
                     </Anchor>
                 </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentEFCTheirRoof" inherits="UIPanelButtonTemplate2" text="EFC Their Roof">
                 <Size>
-                    <AbsDimension x="110" y="23"/>
+                    <AbsDimension x="230" y="200"/>
                 </Size>
+                <Frames>
+
+                    <Button name="$parentEFCOurRoof" inherits="UIPanelButtonTemplate2" text="EFC Our Roof">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCTheirRoof" inherits="UIPanelButtonTemplate2" text="EFC Their Roof">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="120" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCOurTun" inherits="UIPanelButtonTemplate2" text="EFC Our Tunnel">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-25"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCTheirTun" inherits="UIPanelButtonTemplate2" text="EFC Their Tunnel">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="120" y="-25"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCOurTunTop" inherits="UIPanelButtonTemplate2" text="EFC Top of Our Tunnel">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-50"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCTheirTunTop" inherits="UIPanelButtonTemplate2"
+                            text="EFC Top of Their Tunnel">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="120" y="-50"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCMid" inherits="UIPanelButtonTemplate2" text="EFC Mid">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="60" y="-80"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCOurRamp" inherits="UIPanelButtonTemplate2" text="EFC Our Ramp">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-110"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCTheirRamp" inherits="UIPanelButtonTemplate2" text="EFC Their Ramp">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="120" y="-110"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCOurGy" inherits="UIPanelButtonTemplate2" text="EFC Our Graveyard">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-135"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCTheirGy" inherits="UIPanelButtonTemplate2" text="EFC Their Graveyard">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="120" y="-135"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCOurFR" inherits="UIPanelButtonTemplate2" text="EFC Our Flag Room">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-160"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentEFCTheirFR" inherits="UIPanelButtonTemplate2" text="EFC Their Flag Room">
+                        <Size>
+                            <AbsDimension x="110" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="120" y="-160"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                </Frames>
+            </Frame>
+
+            <Frame name="$parentAB" hidden="true">
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
-                            <AbsDimension x="120" y="0"/>
+                            <AbsDimension x="0" y="0"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
+                <Size>
+                    <AbsDimension x="230" y="200"/>
+                </Size>
+                <Frames>
+
+                    <Button name="$parentStables" inherits="UIPanelButtonTemplate2" text="Stables">
+                        <Size>
+                            <AbsDimension x="80" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentStables1" inherits="UIPanelButtonTemplate2" text="1">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentStables" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Stables")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentStables2" inherits="UIPanelButtonTemplate2" text="2">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentStables1" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Stables")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentStables3" inherits="UIPanelButtonTemplate2" text="3">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentStables2" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Stables")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentStables4" inherits="UIPanelButtonTemplate2" text="3+">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentStables3" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Stables")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentStablesFine" inherits="UIPanelButtonTemplate2" text="Fine">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentStables4" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Stables")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentBlacksmith" inherits="UIPanelButtonTemplate2" text="Blacksmith">
+                        <Size>
+                            <AbsDimension x="80" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-25"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentBlacksmith1" inherits="UIPanelButtonTemplate2" text="1">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentBlacksmith" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Blacksmith")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentBlacksmith2" inherits="UIPanelButtonTemplate2" text="2">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentBlacksmith1" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Blacksmith")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentBlacksmith3" inherits="UIPanelButtonTemplate2" text="3">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentBlacksmith2" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Blacksmith")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentBlacksmith4" inherits="UIPanelButtonTemplate2" text="3+">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentBlacksmith3" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Blacksmith")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentBlacksmithFine" inherits="UIPanelButtonTemplate2" text="Fine">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentBlacksmith4" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Blacksmith")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentGoldMine" inherits="UIPanelButtonTemplate2" text="GoldMine">
+                        <Size>
+                            <AbsDimension x="80" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-50"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentGoldMine1" inherits="UIPanelButtonTemplate2" text="1">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentGoldMine" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("GoldMine")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentGoldMine2" inherits="UIPanelButtonTemplate2" text="2">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentGoldMine1" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("GoldMine")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentGoldMine3" inherits="UIPanelButtonTemplate2" text="3">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentGoldMine2" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("GoldMine")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentGoldMine4" inherits="UIPanelButtonTemplate2" text="3+">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentGoldMine3" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("GoldMine")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentGoldMineFine" inherits="UIPanelButtonTemplate2" text="Fine">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentGoldMine4" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("GoldMine")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentLumberMill" inherits="UIPanelButtonTemplate2" text="LumberMill">
+                        <Size>
+                            <AbsDimension x="80" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-75"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentLumberMill1" inherits="UIPanelButtonTemplate2" text="1">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentLumberMill" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("LumberMill")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentLumberMill2" inherits="UIPanelButtonTemplate2" text="2">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentLumberMill1" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("LumberMill")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentLumberMill3" inherits="UIPanelButtonTemplate2" text="3">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentLumberMill2" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("LumberMill")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentLumberMill4" inherits="UIPanelButtonTemplate2" text="3+">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentLumberMill3" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("LumberMill")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentLumberMillFine" inherits="UIPanelButtonTemplate2" text="Fine">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentLumberMill4" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("LumberMill")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="$parentFarm" inherits="UIPanelButtonTemplate2" text="Farm">
+                        <Size>
+                            <AbsDimension x="80" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="0" y="-100"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentFarm1" inherits="UIPanelButtonTemplate2" text="1">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentFarm" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Farm")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentFarm2" inherits="UIPanelButtonTemplate2" text="2">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentFarm1" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Farm")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentFarm3" inherits="UIPanelButtonTemplate2" text="3">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentFarm2" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Farm")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentFarm4" inherits="UIPanelButtonTemplate2" text="3+">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentFarm3" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Farm")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parentFarmFine" inherits="UIPanelButtonTemplate2" text="Fine">
+                        <Size>
+                            <AbsDimension x="30" y="23"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentFarm4" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="0" y="0"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                SpamBG("Farm")
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+
+                </Frames>
+            </Frame>
 
 
-            <Button name="$parentEFCOurTun" inherits="UIPanelButtonTemplate2" text="EFC Our Tunnel">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="0" y="-25"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentEFCTheirTun" inherits="UIPanelButtonTemplate2" text="EFC Their Tunnel">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="120" y="-25"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentEFCOurTunTop" inherits="UIPanelButtonTemplate2" text="EFC Top of Our Tunnel">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="0" y="-50"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentEFCTheirTunTop" inherits="UIPanelButtonTemplate2" text="EFC Top of Their Tunnel">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="120" y="-50"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentEFCMid" inherits="UIPanelButtonTemplate2" text="EFC Mid">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="60" y="-80"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-
-            <Button name="$parentEFCOurRamp" inherits="UIPanelButtonTemplate2" text="EFC Our Ramp">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="0" y="-110"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentEFCTheirRamp" inherits="UIPanelButtonTemplate2" text="EFC Their Ramp">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="120" y="-110"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentEFCOurGy" inherits="UIPanelButtonTemplate2" text="EFC Our Graveyard">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="0" y="-135"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentEFCTheirGy" inherits="UIPanelButtonTemplate2" text="EFC Their Graveyard">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="120" y="-135"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentEFCOurFR" inherits="UIPanelButtonTemplate2" text="EFC Our Flag Room">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="0" y="-160"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentEFCTheirFR" inherits="UIPanelButtonTemplate2" text="EFC Their Flag Room">
-                <Size>
-                    <AbsDimension x="110" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="120" y="-160"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-
-            <Button name="$parentStables" inherits="UIPanelButtonTemplate2" text="Stables">
-                <Size>
-                    <AbsDimension x="80" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="0" y="-200"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentStables1" inherits="UIPanelButtonTemplate2" text="1">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentStables" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Stables")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentStables2" inherits="UIPanelButtonTemplate2" text="2">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentStables1" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Stables")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentStables3" inherits="UIPanelButtonTemplate2" text="3">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentStables2" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Stables")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentStables4" inherits="UIPanelButtonTemplate2" text="3+">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentStables3" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Stables")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentStablesFine" inherits="UIPanelButtonTemplate2" text="Fine">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentStables4" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Stables")
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentBlacksmith" inherits="UIPanelButtonTemplate2" text="Blacksmith">
-                <Size>
-                    <AbsDimension x="80" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="0" y="-225"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentBlacksmith1" inherits="UIPanelButtonTemplate2" text="1">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentBlacksmith" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Blacksmith")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentBlacksmith2" inherits="UIPanelButtonTemplate2" text="2">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentBlacksmith1" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Blacksmith")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentBlacksmith3" inherits="UIPanelButtonTemplate2" text="3">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentBlacksmith2" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Blacksmith")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentBlacksmith4" inherits="UIPanelButtonTemplate2" text="3+">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentBlacksmith3" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Blacksmith")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentBlacksmithFine" inherits="UIPanelButtonTemplate2" text="Fine">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentBlacksmith4" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Blacksmith")
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentGoldMine" inherits="UIPanelButtonTemplate2" text="GoldMine">
-                <Size>
-                    <AbsDimension x="80" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="0" y="-250"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentGoldMine1" inherits="UIPanelButtonTemplate2" text="1">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentGoldMine" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("GoldMine")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentGoldMine2" inherits="UIPanelButtonTemplate2" text="2">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentGoldMine1" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("GoldMine")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentGoldMine3" inherits="UIPanelButtonTemplate2" text="3">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentGoldMine2" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("GoldMine")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentGoldMine4" inherits="UIPanelButtonTemplate2" text="3+">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentGoldMine3" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("GoldMine")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentGoldMineFine" inherits="UIPanelButtonTemplate2" text="Fine">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentGoldMine4" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("GoldMine")
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentLumberMill" inherits="UIPanelButtonTemplate2" text="LumberMill">
-                <Size>
-                    <AbsDimension x="80" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="0" y="-275"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentLumberMill1" inherits="UIPanelButtonTemplate2" text="1">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentLumberMill" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("LumberMill")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentLumberMill2" inherits="UIPanelButtonTemplate2" text="2">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentLumberMill1" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("LumberMill")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentLumberMill3" inherits="UIPanelButtonTemplate2" text="3">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentLumberMill2" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("LumberMill")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentLumberMill4" inherits="UIPanelButtonTemplate2" text="3+">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentLumberMill3" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("LumberMill")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentLumberMillFine" inherits="UIPanelButtonTemplate2" text="Fine">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentLumberMill4" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("LumberMill")
-                    </OnClick>
-                </Scripts>
-            </Button>
-
-            <Button name="$parentFarm" inherits="UIPanelButtonTemplate2" text="Farm">
-                <Size>
-                    <AbsDimension x="80" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="0" y="-300"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG()
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentFarm1" inherits="UIPanelButtonTemplate2" text="1">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentFarm" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Farm")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentFarm2" inherits="UIPanelButtonTemplate2" text="2">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentFarm1" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Farm")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentFarm3" inherits="UIPanelButtonTemplate2" text="3">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentFarm2" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Farm")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentFarm4" inherits="UIPanelButtonTemplate2" text="3+">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentFarm3" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Farm")
-                    </OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentFarmFine" inherits="UIPanelButtonTemplate2" text="Fine">
-                <Size>
-                    <AbsDimension x="30" y="23"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentFarm4" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="0" y="0"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick>
-                        SpamBG("Farm")
-                    </OnClick>
-                </Scripts>
-            </Button>
 
         </Frames>
         <Scripts>
